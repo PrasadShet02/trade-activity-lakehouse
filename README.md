@@ -81,6 +81,5 @@ trade-activity-lakehouse/
 ├── config/                      # PySpark & Iceberg Config
 ├── producer/                    # Kafka Event Generator
 ├── pipeline/                    # Streaming Consumer & Optimizer
-├── schema/                      # DDL & Schema Evolution Scripts
-└── interview_handover.md        # Technical architectural defense document
+└── schema/                      # DDL & Schema Evolution Scripts
 ```
