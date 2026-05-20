@@ -6,9 +6,9 @@ def process_batch(df, epoch_id):
     """Processes a micro-batch for SCD Type 2 updates using a single MERGE statement."""
     if df.isEmpty():
         return
-        
+
     df.createOrReplaceTempView("incoming_trades")
-    
+
     merge_query = """
     MERGE INTO local.db.trades t
     USING (
@@ -20,8 +20,8 @@ def process_batch(df, epoch_id):
     WHEN MATCHED THEN
         UPDATE SET t.is_current = false, t.end_ts = current_timestamp()
     WHEN NOT MATCHED AND s.merge_key IS NULL THEN
-        INSERT (trade_id, symbol, trade_type, quantity, price, event_time, is_current, start_ts, end_ts)
-        VALUES (s.trade_id, s.symbol, s.trade_type, s.quantity, s.price, s.event_time, true, current_timestamp(), null)
+        INSERT (trade_id, symbol, trade_type, quantity, price, event_time, status, exchange, is_current, start_ts, end_ts)
+        VALUES (s.trade_id, s.symbol, s.trade_type, s.quantity, s.price, s.event_time, s.status, s.exchange, true, current_timestamp(), null)
     """
     df.sparkSession.sql(merge_query)
     print(f"Batch {epoch_id} merged successfully.")
@@ -33,9 +33,11 @@ def main():
     schema = StructType([
         StructField("trade_id", StringType()),
         StructField("symbol", StringType()),
-        StructField("trade_type", StringType()),
-        StructField("quantity", IntegerType()),
         StructField("price", DoubleType()),
+        StructField("quantity", IntegerType()),
+        StructField("trade_type", StringType()),
+        StructField("status", StringType()),
+        StructField("exchange", StringType()),
         StructField("event_time", TimestampType())
     ])
 
