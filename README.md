@@ -1,4 +1,4 @@
-# 🌊 Enterprise Trade Activity Lakehouse
+# 🌊 Real-Time Trade Activity Lakehouse
 
 ![Python](https://img.shields.io/badge/Python-3.11-blue.svg)
 ![PySpark](https://img.shields.io/badge/PySpark-3.5.1-orange.svg)
